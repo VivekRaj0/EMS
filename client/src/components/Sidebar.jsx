@@ -64,8 +64,8 @@ const Sidebar = () => {
   ];
 
   const handleLogOut = () => {
-    window.location.href = '/login'
-  }
+    window.location.href = "/login";
+  };
 
   const sidebarContent = (
     <>
@@ -85,7 +85,9 @@ const Sidebar = () => {
           </div>
           {/* close button on mobile */}
           <button
-            onClick={() => setMobileOpen(false)}
+            onClick={() => {
+              setMobileOpen(false);
+            }}
             className="lg:hidden text-slate-400 hover:text-white p-1"
           >
             <XIcon size={20} />
@@ -129,13 +131,13 @@ const Sidebar = () => {
             <Link
               key={item.name}
               to={item.href}
-              className={`group flex items-center gap-3 px-3 py-2.5 rounded-md text-[13px] fonr-medium transition-all duration-150 relative ${isActive ? "bg-indiogo-500/12 text-indigo-300" : "text-slate-300 hover:text-white hover:bg-white/4"}`}
+              className={`group flex items-center gap-3 px-3 py-2.5 rounded-md text-[13px] font-medium transition-all duration-150 relative ${isActive ? "bg-indigo-500/12 text-indigo-300" : "text-slate-300 hover:text-white hover:bg-white/4"}`}
             >
               {isActive && (
                 <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 rounded-r-full bg-indigo-500" />
               )}
               <item.icon
-                className={`w=[17px] h-[17px] shrink-0 ${isActive ? "text-indigo-300" : "text-slate-400 group-hover:text-slate-300"}`}
+                className={`w-[17px] h-[17px] shrink-0 ${isActive ? "text-indigo-300" : "text-slate-400 group-hover:text-slate-300"}`}
               />
               <span className="flex-1">{item.name}</span>
               {isActive && (
@@ -148,9 +150,12 @@ const Sidebar = () => {
 
       {/* logout */}
       <div className="p-3 border-t border-white/6">
-        <button onClick={handleLogOut} className="flex items-center gap-3 w-full px-3 py-2.5 rounded-md text-[13px] font-medium text-slate-400 hover:text-rose-400 hover:bg-rose-500/8 transition-all duration-150">
-            <LogOutIcon className="w-[17px] h-[17px]"/>
-            <span>Log Out</span>
+        <button
+          onClick={handleLogOut}
+          className="flex items-center gap-3 w-full px-3 py-2.5 rounded-md text-[13px] font-medium text-slate-400 hover:text-rose-400 hover:bg-rose-500/8 transition-all duration-150"
+        >
+          <LogOutIcon className="w-[17px] h-[17px]" />
+          <span>Log Out</span>
         </button>
       </div>
     </>
@@ -181,7 +186,7 @@ const Sidebar = () => {
 
       {/* sidebar-mobile */}
       <aside
-        className={`lg:hidden fixed inset-y-0 left-0 w-72 bg-linear-to-b from-slate-900 via-slate-900 to-slate-950 text-white z-50 flex flex-col transform transition-transform duration-300 ${mobileOpen ? "translate-x-0" : "-translate-z-full"}`}
+        className={`lg:hidden fixed inset-y-0 left-0 w-72 bg-linear-to-b from-slate-900 via-slate-900 to-slate-950 text-white z-50 flex flex-col transform transition-transform duration-300 ${mobileOpen ? "translate-x-0" : "-translate-x-full"}`}
       >
         {sidebarContent}
       </aside>
