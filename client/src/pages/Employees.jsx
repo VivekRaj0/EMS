@@ -22,7 +22,7 @@ const Employees = () => {
     setTimeout(() => {
       setLoading(false);
     }, 1000);
-  });
+  }, [selectedDept]);
 
   const filtered = employees.filter((emp) =>
     `${emp.firstName} ${emp.lastName} ${emp.position}`
@@ -32,7 +32,7 @@ const Employees = () => {
 
   useEffect(() => {
     fetchEmployees();
-  }, []);
+  }, [fetchEmployees]);
 
   return (
     <div className="animate-fade-in">
