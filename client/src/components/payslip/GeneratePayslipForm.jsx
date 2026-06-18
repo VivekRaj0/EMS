@@ -24,7 +24,7 @@ const GeneratePayslipForm = ({ employees, onSucess }) => {
       <div className="card max-w-lg w-full p-6 animate-slide-up">
         <div className="flex justify-between items-center mb-6">
           <h3 className="text-lg font-bold text-slate-900">
-            Generate Montly Payslip
+            Generate Monthly Payslip
           </h3>
           <button
             onClick={() => setOpen(false)}
