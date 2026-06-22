@@ -110,7 +110,7 @@ export const updateEmployee = async (req, res) => {
       email,
       phone,
       position,
-      department: department || "Engneering",
+      department: department || "Engineering",
       basicSalary: Number(basicSalary) || 0,
       allowances: Number(basicSalary) || 0,
       deductions: Number(basicSalary) || 0,
