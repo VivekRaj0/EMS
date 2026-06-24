@@ -70,7 +70,7 @@ export const getLeaves = async (req, res) => {
       });
       return res.json({ data });
     } else {
-      const employee = await Employee.findByOne({
+      const employee = await Employee.findOne({
         userId: session.userId,
       }).lean();
       if (!employee) {
