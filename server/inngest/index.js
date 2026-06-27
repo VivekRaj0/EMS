@@ -30,7 +30,7 @@ const autoCheckOut = inngest.createFunction(
                     <br />
                     <p style="font-size: 16px;">Best Regards,</p>
                     <p style="font-size: 16px;">EMS</p>
-                </div>`
+                </div>`,
       });
 
       await step.sleepUntil(
@@ -65,7 +65,7 @@ const leaveApplicationReminder = inngest.createFunction(
       await sendEmail({
         to: process.env.ADMIN_EMAIL,
         subject: `Leave Application Reminder`,
-        body:`<div style="max-width: 600px;">
+        body: `<div style="max-width: 600px;">
                 <h2>Hi Admin, 👋</h2>
                 <p style="font-size: 16px;">You have a leave application in ${employee.department} today:</p>
                 <p style="font-size: 18px; font-weight: bold; color: #007bff; margin: 8px 0;">${leaveApplication?.startDate?.toLocaleDateString()}</p>
@@ -73,15 +73,18 @@ const leaveApplicationReminder = inngest.createFunction(
                 <br />
                 <p style="font-size: 16px;">Best Regards,</p>
                 <p style="font-size: 16px;">EMS</p>
-            </div>`
-      })
+            </div>`,
+      });
     }
   },
 );
 
 //cron job
 const attendanceReminderCron = inngest.createFunction(
-  { id: "attendance-reminder-cron", triggers: [{ cron: "0 0 6 * * *" }] }, //06:00 UTC = 11:30 AM IST
+  {
+    id: "attendance-reminder-cron",
+    triggers: [{ cron: "TZ=Asia/Kolkata 30 11 * * *" }],
+  }, //06:00 UTC = 11:30 AM IST
   async ({ step }) => {
     const today = await step.run("get-today-date", () => {
       const startUTC = new Date(
@@ -129,10 +132,10 @@ const attendanceReminderCron = inngest.createFunction(
     if (absentEmployees.length > 0) {
       await step.run("send-reminder-emails", async () => {
         const emailPromises = absentEmployees.map((emp) => {
-            sendEmail({
-                to: emp.email,
-                subject: "Attendance Reminder- Please Mark your Attendance",
-                body:`  <div style="max-width: 600px; font-family: Arial, sans-serif;">
+          sendEmail({
+            to: emp.email,
+            subject: "Attendance Reminder- Please Mark your Attendance",
+            body: `  <div style="max-width: 600px; font-family: Arial, sans-serif;">
                                 <h2>Hi ${emp.firstName}, 👋</h2>
                                 <p style="font-size: 16px;">We noticed you haven't marked your attendance yet today.</p>
                                 <p style="font-size: 16px;">The deadline was <strong>11:30 AM</strong> and your attendance is still missing.</p>
@@ -142,8 +145,8 @@ const attendanceReminderCron = inngest.createFunction(
                                 <br />
                                 <p style="font-size: 16px;">Best Regards,</p>
                                 <p style="font-size: 16px;"><strong>QuickEMS</strong></p>
-                        </div>`
-            })
+                        </div>`,
+          });
         });
       });
     }
