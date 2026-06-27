@@ -1,3 +1,4 @@
+import { inngest } from "../inngest/index.js";
 import Employee from "../models/Employee.js";
 import LeaveApplication from "../models/LeaveApplication.js";
 
@@ -43,6 +44,13 @@ export const createLeave = async (req, res) => {
       status: "PENDING",
     });
 
+    await inngest.send({
+      name: "leave/pending",
+      data: {
+        leaveApplicationId: leave._id,
+      },
+    });
+
     return res.json({ success: true, data: leave });
   } catch (error) {
     return res.status(500).json({ error: "Failed" });
@@ -78,11 +86,13 @@ export const getLeaves = async (req, res) => {
           json: "Employee not Found",
         });
       }
-      const leaves = (await LeaveApplication.find({employeeId: employee._id})).sort({createdAt: -1});
+      const leaves = (
+        await LeaveApplication.find({ employeeId: employee._id })
+      ).sort({ createdAt: -1 });
       return res.json({
         data: leaves,
-        employee: {...employee, id: employee._id.toString()}
-      })
+        employee: { ...employee, id: employee._id.toString() },
+      });
     }
   } catch (error) {
     return res.status(500).json({ error: "Failed" });
@@ -90,14 +100,18 @@ export const getLeaves = async (req, res) => {
 };
 
 export const updateLeaveStatus = async (req, res) => {
-    try {
-        const {status} = req.body;
-        if(!["APPROVED", "REJECTED", "PENDING"].includes(status)){
-            return res.status(400).json({error: "Invalid status"});
-        }
-        const leave = await LeaveApplication.findByIdAndUpdate(req.params.id, {status}, {returnDocument: "after"})
-        return res.json({success: true, data: leave})
-    } catch (error) {
-        return res.status(500).json({error:"Failed"})
+  try {
+    const { status } = req.body;
+    if (!["APPROVED", "REJECTED", "PENDING"].includes(status)) {
+      return res.status(400).json({ error: "Invalid status" });
     }
+    const leave = await LeaveApplication.findByIdAndUpdate(
+      req.params.id,
+      { status },
+      { returnDocument: "after" },
+    );
+    return res.json({ success: true, data: leave });
+  } catch (error) {
+    return res.status(500).json({ error: "Failed" });
+  }
 };
