@@ -16,7 +16,7 @@ const autoCheckOut = inngest.createFunction(
       new Date(new Date().getTime() + 9 * 60 * 60 * 1000),
     );
     let attendance = await Attendance.findById(attendanceId);
-    if (!attendance?.checkout) {
+    if (!attendance?.checkOut) {
       const employee = await Employee.findById(employeeId);
       await sendEmail({
         to: employee.email,
@@ -94,7 +94,7 @@ const attendanceReminderCron = inngest.createFunction(
 
     const activeEmployees = await step.run("get-active-employee", async () => {
       const employees = await Employee.find({
-        idDeleted: false,
+        isDeleted: false,
         employeeStatus: "ACTIVE",
       }).lean();
       return employees.map((e) => ({
@@ -130,7 +130,7 @@ const attendanceReminderCron = inngest.createFunction(
       await step.run("send-reminder-emails", async () => {
         const emailPromises = absentEmployees.map((emp) => {
             sendEmail({
-                to: employee.email,
+                to: emp.email,
                 subject: "Attendance Reminder- Please Mark your Attendance",
                 body:`  <div style="max-width: 600px; font-family: Arial, sans-serif;">
                                 <h2>Hi ${emp.firstName}, 👋</h2>
