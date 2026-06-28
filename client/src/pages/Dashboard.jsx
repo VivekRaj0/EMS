@@ -17,7 +17,7 @@ const Dashboard = () => {
     api
       .get("/dashboard")
       .then((res) => setData(res.data))
-      .catch((err) => toast.error(err.response?.data?.errot || err.message))
+      .catch((err) => toast.error(error.response?.data?.error || error.message))
       .finally(() => setLoading(false));
   }, []);
 
