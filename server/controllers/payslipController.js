@@ -63,7 +63,7 @@ export const getPayslip = async (req, res) => {
           json: "Employee not Found",
         });
       }
-      const payslip = (await Payslip.find({ employeeId: employee._id })).sort({
+      const payslip = await Payslip.find({ employeeId: employee._id }).sort({
         createdAt: -1,
       });
       return res.json({

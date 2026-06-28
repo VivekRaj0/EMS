@@ -1,5 +1,7 @@
 import { Loader2, Plus, X } from "lucide-react";
 import React, { useState } from "react";
+import toast from "react-hot-toast";
+import api from "../../api/axios";
 
 const GeneratePayslipForm = ({ employees, onSucess }) => {
   const [open, setOpen] = useState(false);
@@ -17,6 +19,17 @@ const GeneratePayslipForm = ({ employees, onSucess }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true)
+    const formData = new FormData(e.currentTarget);
+    const data = Object.fromEntries(formData.entries())
+    try {
+      await api.post("/payslips", data)
+      setOpen(false)
+      onSucess()
+    } catch (error) {
+      toast.error(error.response?.data?.error || error.message)
+    }
+    setLoading(false)
   };
 
   return (
@@ -109,7 +122,6 @@ const GeneratePayslipForm = ({ employees, onSucess }) => {
             </button>
             <button
               disabled={loading}
-              onClick={() => setOpen(false)}
               type="submit"
               className="btn-primary flex items-center"
             >

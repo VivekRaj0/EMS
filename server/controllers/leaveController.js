@@ -86,9 +86,9 @@ export const getLeaves = async (req, res) => {
           json: "Employee not Found",
         });
       }
-      const leaves = (
-        await LeaveApplication.find({ employeeId: employee._id })
-      ).sort({ createdAt: -1 });
+      const leaves = await LeaveApplication.find({
+        employeeId: employee._id,
+      }).sort({ createdAt: -1 });
       return res.json({
         data: leaves,
         employee: { ...employee, id: employee._id.toString() },

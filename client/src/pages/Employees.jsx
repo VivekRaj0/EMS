@@ -3,6 +3,8 @@ import { dummyEmployeeData, DEPARTMENTS } from "../assets/assets";
 import { Plus, Search, X } from "lucide-react";
 import EmployeeCard from "../components/EmployeeCard";
 import EmployeeForm from "../components/EmployeeForm";
+import api from "../api/axios";
+import toast from "react-hot-toast";
 
 const Employees = () => {
   const [employees, setEmployees] = useState([]);
@@ -13,15 +15,17 @@ const Employees = () => {
   const [showCreateModal, setShowCreateModal] = useState(false);
 
   const fetchEmployees = useCallback(async () => {
-    setLoading(true);
-    setEmployees(
-      dummyEmployeeData.filter((emp) =>
-        selectedDept ? employees.depatment === selectedDept : emp,
-      ),
-    );
-    setTimeout(() => {
+    try {
+      const url = selectedDept
+        ? `/employees?department=${selectedDept}`
+        : "/employees";
+      const res = await api.get(url);
+      setEmployees(res.data);
+    } catch (error) {
+      toast.error("Failed to fetch employees");
+    } finally {
       setLoading(false);
-    }, 1000);
+    }
   }, [selectedDept]);
 
   const filtered = employees.filter((emp) =>
@@ -83,7 +87,7 @@ const Employees = () => {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5">
           {filtered.length === 0 ? (
-            <p className="cols-span-full text-center py-16 text-slate-400 bg-white rounded-2xl border border-dashed border-slate-200">
+            <p className="col-span-full text-center py-16 text-slate-400 bg-white rounded-2xl border border-dashed border-slate-200">
               No Employees Found
             </p>
           ) : (
