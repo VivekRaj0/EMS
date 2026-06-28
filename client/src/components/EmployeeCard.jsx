@@ -1,12 +1,18 @@
 import { PencilIcon, Trash2Icon } from "lucide-react";
 import React from "react";
+import api from "../api/axios";
+import toast from "react-hot-toast";
 
 const EmployeeCard = ({ employee, onDelete, onEdit }) => {
-
-    const handleDelete = async() =>{
-        if(!confirm("Are you sure you want to delete this employee?"))
-            return
+  const handleDelete = async () => {
+    if (!confirm("Are you sure you want to delete this employee?")) return;
+    try {
+      await api.delete(`/employees/${employee.id}`);
+      onDelete();
+    } catch (error) {
+      toast.error(error.response?.data?.error || error.message);
     }
+  };
 
   return (
     <div className="group relative card card-hover overflow-hidden">
@@ -34,10 +40,16 @@ const EmployeeCard = ({ employee, onDelete, onEdit }) => {
 
       {!employee.isDeleted && (
         <div className="absolute inset-0 bg-linear-to-t from-indigo-700/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end justify-center pb-36 gap-3">
-          <button onClick={() => onEdit(employee)} className="p-2.5 bg-white/90 backdrop-blur-sm text-indigo-600 rounded-xl shadow-lg transition-all hover:scale-105">
-            <PencilIcon className="w-4 h-4"/>
+          <button
+            onClick={() => onEdit(employee)}
+            className="p-2.5 bg-white/90 backdrop-blur-sm text-indigo-600 rounded-xl shadow-lg transition-all hover:scale-105"
+          >
+            <PencilIcon className="w-4 h-4" />
           </button>
-          <button onClick={handleDelete} className="p-2.5 bg-white/90 backdrop-blur-sm text-rose-600 rounded-xl shadow-lg transition-all hover:scale-105 disabled:opacity-50">
+          <button
+            onClick={handleDelete}
+            className="p-2.5 bg-white/90 backdrop-blur-sm text-rose-600 rounded-xl shadow-lg transition-all hover:scale-105 disabled:opacity-50"
+          >
             <Trash2Icon className="w-4 h-4" />
           </button>
         </div>

@@ -39,12 +39,12 @@ export const clockInOut = async (req, res) => {
       });
 
       await inngest.send({
-        name:"employee/check-out",
+        name: "employee/check-out",
         data: {
           employeeId: employee._id,
-          attendanceId: attendance._id
-        }
-      })
+          attendanceId: attendance._id,
+        },
+      });
 
       return res.json({ success: true, type: "CHECK_IN", data: attendance });
     } else if (!existing.checkOut) {
@@ -87,12 +87,12 @@ export const getAttendance = async (req, res) => {
     }
 
     const limit = parseInt(req.query.limit || 30);
-    const history = (await Attendance.find({ employeeId: employee._id }))
+    const history = await Attendance.find({ employeeId: employee._id })
       .sort({ date: -1 })
       .limit(limit);
 
     return res.json({
-      date: history,
+      data: history,
       employee: { isDeleted: employee.isDeleted },
     });
   } catch (error) {

@@ -150,7 +150,7 @@ const attendanceReminderCron = inngest.createFunction(
         });
       });
     }
-
+    await promises.all(emailPromises)
     return {
       totalActive: activeEmployees.length,
       onLeave: onLeaveIds.length,

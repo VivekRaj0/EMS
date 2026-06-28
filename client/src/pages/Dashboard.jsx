@@ -1,28 +1,39 @@
-import React, { useState, useEffect } from 'react'
-import { dummyAdminDashboardData, dummyEmployeeDashboardData } from '../assets/assets'
-import Loading from '../components/Loading'
-import EmployeeDashboard from '../components/EmployeeDashboard'
-import AdminDashboard from '../components/AdminDashboard'
+import React, { useState, useEffect } from "react";
+import {
+  dummyAdminDashboardData,
+  dummyEmployeeDashboardData,
+} from "../assets/assets";
+import Loading from "../components/Loading";
+import EmployeeDashboard from "../components/EmployeeDashboard";
+import AdminDashboard from "../components/AdminDashboard";
+import api from "../api/axios";
+import toast from "react-hot-toast";
 
 const Dashboard = () => {
-  const [data, setData] = useState(null)
-  const [loading, setLoading] = useState(true)
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setData(dummyAdminDashboardData)
-    setTimeout(() => {
-        setLoading(false)
-    },1000)
-  }, [])
+    api
+      .get("/dashboard")
+      .then((res) => setData(res.data))
+      .catch((err) => toast.error(err.response?.data?.errot || err.message))
+      .finally(() => setLoading(false));
+  }, []);
 
-  if(loading) return <Loading/>
-  if(!data) return <p className='text-center text-slate-500 py-12'>Failed to load dashboard</p>
+  if (loading) return <Loading />;
+  if (!data)
+    return (
+      <p className="text-center text-slate-500 py-12">
+        Failed to load dashboard
+      </p>
+    );
 
-  if(data.role === "ADMIN"){
-    return <AdminDashboard data={data}/>
-  }else{
-    return <EmployeeDashboard data={data}/>
+  if (data.role === "ADMIN") {
+    return <AdminDashboard data={data} />;
+  } else {
+    return <EmployeeDashboard data={data} />;
   }
-}
+};
 
-export default Dashboard
+export default Dashboard;

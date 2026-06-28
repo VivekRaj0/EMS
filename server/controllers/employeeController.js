@@ -65,8 +65,8 @@ export const createEmployee = async (req, res) => {
       position,
       department: department || "Engneering",
       basicSalary: Number(basicSalary) || 0,
-      allowances: Number(basicSalary) || 0,
-      deductions: Number(basicSalary) || 0,
+      allowances: Number(allowances) || 0,
+      deductions: Number(deductions) || 0,
       joinDate: new Date(joinDate),
       bio: bio || "",
     });
@@ -112,8 +112,8 @@ export const updateEmployee = async (req, res) => {
       position,
       department: department || "Engineering",
       basicSalary: Number(basicSalary) || 0,
-      allowances: Number(basicSalary) || 0,
-      deductions: Number(basicSalary) || 0,
+      allowances: Number(allowances) || 0,
+      deductions: Number(deductions) || 0,
       employmentStatus: employmentStatus || "ACTIVE",
       bio: bio || "",
     });
