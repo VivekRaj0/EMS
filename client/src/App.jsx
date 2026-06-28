@@ -10,7 +10,7 @@ import Leave from "./pages/Leave";
 import Payslips from "./pages/Payslips";
 import Settings from "./pages/Settings";
 import PrintPayslip from "./pages/PrintPayslip";
-import LoginForm from "./components/LOginForm";
+import LoginForm from "./components/LoginForm";
 
 const App = () => {
   return (
